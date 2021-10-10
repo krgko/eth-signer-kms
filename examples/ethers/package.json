@@ -3,7 +3,8 @@
     "version": "1.0.0",
     "description": "Example project utilizing KMS Provider with ethers.js",
     "scripts": {
-        "start": "ts-node index.ts"
+        "start": "ts-node index.ts",
+        "upgrade-forked-pkg": "npm upgrade @rumblefishdev/eth-signer-kms && cd node_modules/@rumblefishdev/eth-signer-kms && npm run build"
     },
     "author": "",
     "license": "ISC",
@@ -13,7 +14,7 @@
         "typescript": "^4.3.4"
     },
     "dependencies": {
-        "@rumblefishdev/eth-signer-kms": "^1.0.10",
+        "@rumblefishdev/eth-signer-kms": "github:krgko/eth-signer-kms#fix/supports_aws_config",
         "ethers": "^5.4.0"
     }
 }
