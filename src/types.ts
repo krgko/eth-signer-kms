@@ -11,8 +11,15 @@ export type CreateSignatureParams = SignParams & {
   txOpts?: Common
 }
 
+export type PrivateChain = {
+  name: string
+  chainId: number
+  networkId: number
+}
+
 export type ChainSettings = Omit<CommonOpts, 'chain'> & {
   chain?: CommonOpts['chain']
+  privateChain?: PrivateChain
 }
 
 export type KMSProviderConstructor = {

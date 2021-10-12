@@ -19,7 +19,7 @@ import { KeyIdType } from 'aws-sdk/clients/kms'
 
 import { createSignature } from './eth'
 import { getEthAddressFromKMS } from './kms'
-import { KMSProviderConstructor } from './types'
+import { KMSProviderConstructor, ChainSettings } from './types'
 
 export class KMSProvider {
   private keyId: KeyIdType
@@ -28,6 +28,7 @@ export class KMSProvider {
   private accessKeyId: string
   private secretAccessKey: string
   private region: string
+  private chainSettings: ChainSettings
   private initializedChainId: Promise<void>
   private initializedAddress: Promise<void>
   public engine: ProviderEngine
@@ -48,6 +49,7 @@ export class KMSProvider {
     this.engine = new ProviderEngine({
       pollingInterval
     })
+    this.chainSettings = chainSettings
 
     if (!KMSProvider.isValidProvider(providerOrUrl)) {
       throw new Error(
@@ -60,12 +62,7 @@ export class KMSProvider {
     }
 
     this.initializedAddress = this.initializeAddress()
-
-    if (chainSettings.chain) {
-      this.initializedChainId = Promise.resolve()
-    } else {
-      this.initializedChainId = this.initializeChainId()
-    }
+    this.initializedChainId = this.initializeChainId()
 
     const self = this
 
@@ -82,10 +79,19 @@ export class KMSProvider {
           txParams.gasLimit = txParams.gas
           delete txParams.gas
 
-          const txOptions = new Common({
-            ...chainSettings,
-            chain: chainSettings.chain || self.chainId
-          })
+          let txOptions
+          if (
+            chainSettings.privateChain ||
+            (self.chainSettings && self.chainSettings.privateChain)
+          ) {
+            txOptions = Common.custom(
+              chainSettings.privateChain || self.chainSettings.privateChain
+            )
+          } else {
+            txOptions = new Common({
+              chain: chainSettings.chain || self.chainId
+            })
+          }
 
           const tx = TransactionFactory.fromTxData(txParams, {
             common: txOptions
