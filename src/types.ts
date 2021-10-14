@@ -1,4 +1,4 @@
-import { KMS } from 'aws-sdk'
+import { KMS, Response } from 'aws-sdk'
 import Common, { CommonOpts } from '@ethereumjs/common'
 
 export type SignParams = {
@@ -32,3 +32,5 @@ export type KMSProviderConstructor = {
   pollingInterval?: number
   chainSettings?: ChainSettings
 }
+
+export type PromiseResult<D, E> = D & { $response: Response<D, E> }
