@@ -13,7 +13,7 @@
         "typescript": "^4.3.4"
     },
     "dependencies": {
-        "@rumblefishdev/eth-signer-kms": "^1.0.10",
+        "@rumblefishdev/eth-signer-kms": "github:krgko/eth-signer-kms#supports_private_chain",
         "ethers": "^5.4.0"
     }
 }

@@ -13,7 +13,14 @@ const getSigner = async () => {
       providerOrUrl: process.env.PROVIDER,
       accessKeyId: process.env.ACCESSKEYID,
       secretAccessKey: process.env.SECRETACCESSKEY,
-      region: process.env.REGION
+      region: process.env.REGION,
+      chainSettings: {
+        privateChain: {
+          chainId: 1337,
+          networkId: 2018,
+          name: 'besu-dev'
+        }
+      }
     })
 
     console.log('KMSProvider initialized')
