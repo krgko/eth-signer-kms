@@ -207,6 +207,23 @@ export class KMSProvider {
     })
   }
 
+  public async changeInitializeAddressByKeyId(keyId: string): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        this.address = await getEthAddressFromKMS(
+          keyId,
+          this.accessKeyId,
+          this.secretAccessKey,
+          this.region
+        )
+        this.keyId = keyId
+        resolve()
+      } catch (e) {
+        reject(e)
+      }
+    })
+  }
+
   private initializeChainId(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.engine.sendAsync(
